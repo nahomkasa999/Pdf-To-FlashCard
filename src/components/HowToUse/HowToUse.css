@@ -1,0 +1,161 @@
+.HowToUse {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 40px 0px;
+  }
+  
+  .HowToUse h1 {
+    font-size: 72px;
+    color: rebeccapurple;
+  }
+  
+  .HowToUseStepContainer {
+    display: flex;
+    flex-direction: column;
+    padding: 50px;
+    width: 70%;
+  }
+  
+  .HowToUseContainer {
+    width: 100%;
+  }
+  
+  .HowToUseContainer h3, .HowToUseStepContainer h3 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: rebeccapurple;
+  }
+  
+  .HowToUseContainer p, .HowToUseStepContainer p {
+    font-size: 1rem;
+    color: #555;
+  }
+  
+  .ImageTextContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    gap: 30px;
+    margin: 30px;
+  }
+  
+  .ImageTextContainer img {
+    width: 300px;
+    height: auto;
+    border-radius: 5px;
+  }
+  
+  .ImageTextContainer .image img {
+    width: 300px;
+    height: auto;
+  }
+  
+  .ImageTextContainer .image p {
+    width: 200px;
+  }
+  
+  .ImageTextContainerfive {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .sectionOne {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    gap: 30px;
+    margin: 30px;
+  }
+  
+  .sectionOne img {
+    width: 400px;
+    height: auto;
+    border-radius: 5px;
+  }
+  b{
+    color: #663399;
+  }
+  
+  @media (max-width: 1200px) {
+    .HowToUse h1 {
+      font-size: 60px;
+    }
+  
+    .HowToUseStepContainer {
+      padding: 40px;
+      width: 80%;
+    }
+  
+    .ImageTextContainer {
+      gap: 20px;
+      margin: 20px;
+    }
+  
+    .ImageTextContainer img {
+      width: 250px;
+    }
+  
+    .sectionOne img {
+      width: 350px;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .HowToUse h1 {
+      font-size: 48px;
+    }
+  
+    .HowToUseStepContainer {
+      padding: 30px;
+      width: 90%;
+    }
+  
+    .ImageTextContainer {
+      flex-direction: column;
+      gap: 15px;
+      margin: 15px;
+    }
+  
+    .ImageTextContainer img {
+      width: 200px;
+    }
+  
+    .sectionOne {
+      flex-direction: column;
+      gap: 15px;
+      margin: 15px;
+    }
+  
+    .sectionOne img {
+      width: 300px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .HowToUse h1 {
+      font-size: 36px;
+    }
+  
+    .HowToUseStepContainer {
+      padding: 20px;
+      width: 100%;
+    }
+  
+    .ImageTextContainer {
+      gap: 10px;
+      margin: 10px;
+    }
+  
+    .ImageTextContainer img {
+      /* width: 150px; */
+      display: none;
+    }
+  
+    .sectionOne img {
+      width: 250px;
+    }
+  }

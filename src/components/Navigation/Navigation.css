@@ -1,0 +1,55 @@
+html {
+  scroll-behavior: smooth;
+}
+
+.Navigation_container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.Navigation_container a {
+  font-size: 25px;
+  text-decoration: none;
+  color: black;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+}
+
+.Navigation_container a:hover {
+  color: rebeccapurple;
+  cursor: pointer;
+}
+
+.Navigation {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 0px 50px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 1200px) {
+  .Navigation_container a {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 768px) {
+  .Navigation_container {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .Navigation_container a {
+    font-size: 20px;
+    margin: 10px 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .Navigation_container a {
+    font-size: 14px;
+  }
+}
