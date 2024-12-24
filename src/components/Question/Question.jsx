@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import Questions from "../../assets/Question";
 import "./Question.css";
 
-function Question() {
+function Question({ Containt }) {
+  console.log(Containt);
   const [showDetails, setShowDetails] = useState(
     Questions.map(() => ({ showAnswer: false, showExtra: false }))
   );
