@@ -1,20 +1,17 @@
 import React from "react";
-import Navigation from "./components/Navigation/Navigation";
-import Header from "./components/Header/Header";
-import About from "./components/About/About";
-import HowToUse from "./components/HowToUse/HowToUse";
-import Footer from "./components/Footer/Footer";
-import Question from "./components/Question/Question";
+import {
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  UserButton,
+} from "@clerk/clerk-react";
 
+import Home from "./pages/Home/Home";
+import Landing from "./pages/landing/landing";
 function App() {
   return (
     <div>
-      <Navigation />
-      <Header />
-      {Object.keys(Question) === 0 ? "" : <Question />}
-      <About />
-      <HowToUse />
-      <Footer />
+      <Home />
     </div>
   );
 }

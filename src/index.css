@@ -14,7 +14,7 @@ body {
   );
   background-repeat: no-repeat;
   background-size: cover;
-  margin: 30px;
+  margin: 30px 10% 30px 10%;
 }
 
 @media (max-width: 1200px) {

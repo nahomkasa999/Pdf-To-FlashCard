@@ -1,0 +1,87 @@
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px; /* Added gap for spacing between elements */
+  padding: 20px;
+}
+
+.hero-title {
+  font-size: 82px;
+  color: rebeccapurple;
+  margin: 0;
+  text-align: center;
+}
+
+.hero-subtitle {
+  font-size: 32px;
+  width: 60%;
+  text-align: center;
+}
+
+.hero-signin-button {
+  width: 400px;
+  height: 100px;
+  border-radius: 30px;
+  background-color: rebeccapurple;
+  color: white;
+  font-size: 40px;
+  font-weight: bold;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+@media (max-width: 1024px) {
+  .hero-title {
+    font-size: 60px;
+  }
+
+  .hero-subtitle {
+    font-size: 24px;
+    width: 80%; /* Increase width on medium screens */
+  }
+
+  .hero-signin-button {
+    width: 300px;
+    height: 80px;
+    font-size: 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 48px;
+  }
+
+  .hero-subtitle {
+    font-size: 20px;
+    width: 90%; /* Further reduce the width on smaller screens */
+  }
+
+  .hero-signin-button {
+    width: 250px;
+    height: 70px;
+    font-size: 26px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-title {
+    font-size: 36px;
+  }
+
+  .hero-subtitle {
+    font-size: 18px;
+    width: 90%; /* Adjust subtitle width for smaller devices */
+  }
+
+  .hero-signin-button {
+    width: 200px;
+    height: 60px;
+    font-size: 22px;
+  }
+}

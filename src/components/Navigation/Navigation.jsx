@@ -8,6 +8,7 @@ function Navigation() {
         <a href="#Home">Home</a>
         <a href="#About">About</a>
         <a href="#HowToUse">How To use</a>
+        <a href="#Testimonials">Testimonials</a>
         <a href="#Footer">Contact Me</a>
       </div>
     </div>

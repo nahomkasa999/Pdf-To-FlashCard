@@ -1,31 +1,51 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useDropzone } from "react-dropzone";
-import { getDocument, GlobalWorkerOptions } from "pdfjs-dist"; // Import GlobalWorkerOptions
+import { getDocument, GlobalWorkerOptions } from "pdfjs-dist";
 import "./Header.css";
-import Question from "../Question/Question";
+import { TextExtractedContext } from "../../context/TextExtractedContext";
 
-function Header(props) {
+function Header() {
   const [fileUploaded, setFileUploaded] = useState(false);
-  const [generateReady, setGenerateReady] = useState(false);
-  const [downloadReady, setDownloadReady] = useState(false);
-  const [startPage, setStartPage] = useState(75);
-  const [endPage, setEndPage] = useState(86);
 
-  const TextExtracted = [];
+  const {
+    setTextExtracted,
+    setBeginGeneration,
+    startPage: contextStartPage,
+    setStartPage,
+    endPage: contextEndPage,
+    setEndPage,
+    setDownloadReady,
+    downloadReady,
+    setStartDownload,
+    generateReady,
+    setGenerateReady,
+  } = useContext(TextExtractedContext);
+
+  const [startPage, setLocalStartPage] = useState(
+    parseInt(contextStartPage) || 1
+  );
+  const [endPage, setLocalEndPage] = useState(parseInt(contextEndPage) || 1);
+  const [inputError, setInputError] = useState({
+    manypage: false,
+    negativeValue: false,
+  });
+
+  useEffect(() => {
+    setInputError({
+      manypage: endPage - startPage > 15,
+      negativeValue: endPage < startPage,
+    });
+  }, [startPage, endPage]);
 
   const { acceptedFiles, fileRejections, getRootProps, getInputProps } =
     useDropzone({
       maxFiles: 1,
       accept: ".pdf",
-      onDrop: () => {
-        setFileUploaded(true);
-      },
+      onDrop: () => setFileUploaded(true),
     });
 
-  // Set the path for the worker script to resolve the 'No "GlobalWorkerOptions.workerSrc" specified' error
   useEffect(() => {
-    // Path to the worker script
-    GlobalWorkerOptions.workerSrc = "./pdf.worker.mjs"; // Update this to your actual path or use a CDN path
+    GlobalWorkerOptions.workerSrc = "./pdf.worker.mjs";
   }, []);
 
   useEffect(() => {
@@ -33,48 +53,48 @@ function Header(props) {
       const file = acceptedFiles[0];
       const reader = new FileReader();
 
-      reader.onload = function () {
-        const typedArray = new Uint8Array(this.result);
+      reader.onload = async () => {
+        const typedArray = new Uint8Array(reader.result);
         const loadingTask = getDocument(typedArray);
-        loadingTask.promise
-          .then((pdf) => {
+
+        try {
+          const pdf = await loadingTask.promise;
+          if (
+            startPage > 0 &&
+            endPage >= startPage &&
+            endPage <= pdf.numPages &&
+            endPage - startPage < 15
+          ) {
+            const extractedText = [];
             for (let i = startPage; i <= endPage; i++) {
-              const page = pdf.getPage(i);
-              page.then((pages) => {
-                pages.getTextContent().then((text) => {
-                  const PageSeparateText = text.items.map((item) => item.str); // this returns an array of text from the page
-                  const PageText = PageSeparateText.join(" "); // this joins the array of text into a single string
-                  if (PageText.length > 100) {
-                    const divisor = Math.floor(PageText.length / 100);
-                    for (let i = 0; i < divisor; i++) {
-                      TextExtracted.push(
-                        PageText.substring(i * 100, (i + 1) * 100)
-                      );
-                    }
-                  }
-                });
-              });
+              const page = await pdf.getPage(i);
+              const textContent = await page.getTextContent();
+              const pageText = textContent.items
+                .map((item) => item.str)
+                .join(" ");
+              extractedText.push(pageText);
             }
+            setTextExtracted(extractedText);
             setGenerateReady(true);
-            console.log(TextExtracted);
-          })
-          .catch((error) => {
-            console.error("Error loading PDF:", error);
+          } else {
             setGenerateReady(false);
-          });
+          }
+        } catch (error) {
+          console.error("Error loading PDF:", error);
+          setGenerateReady(false);
+        }
       };
+
       reader.readAsArrayBuffer(file);
     }
-  }, [acceptedFiles]);
+  }, [acceptedFiles, startPage, endPage, setTextExtracted]);
 
-  // Mapping accepted files to display
   const files = acceptedFiles.map((file) => (
     <li key={file.name}>
       {file.name} - {file.size} bytes
     </li>
   ));
 
-  // Handling rejected files (e.g., if a non-PDF file is uploaded)
   const rejectedFiles = fileRejections.map(({ file }) => (
     <li key={file.name}>{file.name} - Rejected (not a PDF)</li>
   ));
@@ -87,27 +107,19 @@ function Header(props) {
           <p>Turn PDFs into FlashCards - Fast, Simple, Effective</p>
         </div>
         <div className="Drag_Drop_container">
-          <div
-            {...getRootProps({
-              className: "dropzone",
-            })}
-          >
+          <div {...getRootProps({ className: "dropzone" })}>
             <input {...getInputProps()} />
             {files.length <= 0 ? (
               <p>Drag 'n' drop some files here, or click to select files</p>
             ) : (
-              <h3> {files} </h3>
+              <h3>{files}</h3>
             )}
           </div>
           <aside>
             {rejectedFiles.length > 0 && (
               <div>
-                <h4 className={rejectedFiles.length > 0 ? "Rejected" : "hide"}>
-                  Rejected Files
-                </h4>
-                <ul className={rejectedFiles.length > 0 ? "Rejected" : "hide"}>
-                  {rejectedFiles}
-                </ul>
+                <h4 className="Rejected">Rejected Files</h4>
+                <ul className="Rejected">{rejectedFiles}</ul>
               </div>
             )}
           </aside>
@@ -115,36 +127,51 @@ function Header(props) {
             <div className="InputsContainer">
               <input
                 type="number"
-                className="startPage PageInput"
+                className={
+                  inputError.manypage || inputError.negativeValue
+                    ? "inputError"
+                    : "startPage pageInput"
+                }
                 placeholder="Start page"
                 value={startPage}
-                onChange={(e) => setStartPage(e.target.value)}
+                onChange={(e) => setLocalStartPage(parseInt(e.target.value))}
               />
               <input
                 type="number"
-                className="endPage PageEnd"
+                className={
+                  inputError.manypage || inputError.negativeValue
+                    ? "inputError"
+                    : "endPage pageInput"
+                }
                 placeholder="End page"
                 value={endPage}
-                onChange={(e) => setEndPage(e.target.value)}
+                onChange={(e) => setLocalEndPage(parseInt(e.target.value))}
               />
+              {inputError.manypage && (
+                <span>
+                  From start page to end page should be less than 15 pages
+                </span>
+              )}
+              {inputError.negativeValue && (
+                <span>End page cannot be less than start page</span>
+              )}
             </div>
             <div className="ActionBtn">
               <button
                 className={
                   generateReady ? "generateFlashcard active" : "inactive"
                 }
+                onClick={() => setBeginGeneration(true)}
               >
                 Generate Flashcard
               </button>
               <button
-                onClick={() => {
-                  setDownloadReady(true);
-                }}
                 className={
                   downloadReady && generateReady
                     ? "DownloadCSV active"
                     : "inactive"
                 }
+                onClick={() => setStartDownload(true)}
               >
                 Download CSV
               </button>

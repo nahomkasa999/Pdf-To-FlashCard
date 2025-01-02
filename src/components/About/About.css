@@ -1,72 +1,72 @@
-.About{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  .About{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      
+      margin-top: 40px;
+  }
+
+  .About h1{
+      font-size: 72px;
+      color: rebeccapurple;
+  }
+  .AboutwhyElementContainer {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr); 
+      gap: 20px;
+      padding: 20px;
+    }
     
-    margin-top: 40px;
-}
+    .grid-item {
+      background-color: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 4px 5px rgba(255, 255, 255, 0.733); 
+      padding: 20px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .grid-item h3 {
+      margin: 0;
+      font-size: 1.3rem;
+    }
+    
+    .grid-item p {
+      font-size: 1rem;
+      color: #555;
+    }
+    
+    .grid-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 30px rgba(0, 0, 0, 0.2); 
+    }
 
-.About h1{
-    font-size: 72px;
-    color: rebeccapurple;
-}
-.AboutwhyElementContainer {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); 
-    gap: 20px;
-    padding: 20px;
-  }
-  
-  .grid-item {
-    background-color: #D9D9D9;
-    border-radius: 8px;
-    box-shadow: 0 4px 5px rgba(107, 35, 158, 0.399); 
-    padding: 20px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  
-  .grid-item h3 {
-    margin: 0;
-    font-size: 1.5rem;
-  }
-  
-  .grid-item p {
-    font-size: 1rem;
-    color: #555;
-  }
-  
-  .grid-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 30px rgba(0, 0, 0, 0.2); 
+  @media (max-width: 1200px) {
+    .AboutwhyElementContainer {
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
 
-@media (max-width: 1200px) {
-  .AboutwhyElementContainer {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
+  @media (max-width: 768px) {
+    .AboutwhyElementContainer {
+      grid-template-columns: 1fr;
+    }
 
-@media (max-width: 768px) {
-  .AboutwhyElementContainer {
-    grid-template-columns: 1fr;
-  }
-
-  .About h1 {
-    font-size: 48px;
-  }
-}
-
-@media (max-width: 480px) {
-  .About h1 {
-    font-size: 36px;
+    .About h1 {
+      font-size: 48px;
+    }
   }
 
-  .grid-item h3 {
-    font-size: 1.25rem;
-  }
+  @media (max-width: 480px) {
+    .About h1 {
+      font-size: 36px;
+    }
 
-  .grid-item p {
-    font-size: 0.875rem;
+    .grid-item h3 {
+      font-size: 1.25rem;
+    }
+
+    .grid-item p {
+      font-size: 0.875rem;
+    }
   }
-}
