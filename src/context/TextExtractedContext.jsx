@@ -10,6 +10,11 @@ export const TextExtractedProvider = ({ children }) => {
   const [downloadReady, setDownloadReady] = useState(false);
   const [startDownload, setStartDownload] = useState(false);
   const [generateReady, setGenerateReady] = useState(false);
+  const [fileName, setFileName] = useState("");
+  const [pageNumbers, setPageNumbers] = useState({
+    startPage: 0,
+    endPage: 0,
+  });
   return (
     <TextExtractedContext.Provider
       value={{
@@ -27,6 +32,10 @@ export const TextExtractedProvider = ({ children }) => {
         setStartDownload,
         generateReady,
         setGenerateReady,
+        fileName,
+        setFileName,
+        pageNumbers,
+        setPageNumbers,
       }}
     >
       {children}

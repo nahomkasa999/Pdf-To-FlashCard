@@ -14,7 +14,7 @@
     align-items: center;
   }
   
-  .HeaderTitle h1 {
+  .HeaderTitle h1 { 
     color: rebeccapurple;
     font-size: 72px;
     font-family: 'Poppins', sans-serif;
@@ -190,7 +190,7 @@
     .PdfAction .InputsContainer input,
     .PdfAction .ActionBtn button {
       width: 150px;
-      height: 35px;
+      height: 50px;
       font-size: 10px;
     }
   }
@@ -208,7 +208,12 @@
     .Drag_Drop_container {
       width: 90%;
       height: 40vh;
-      padding: 10px;
+    }
+
+    .dropzone{
+      width: 100%;
+      height: 30vh;
+
     }
   
     .PdfAction {
@@ -217,7 +222,20 @@
       height: 100%;
       margin: 0px;
     }
-  
+    .PdfAction .InputsContainer .pageInput{
+      margin: 10px;
+      width: 60%;
+    }
+    .ActionBtn{
+    margin: 1px;
+     width: 100%;
+     display: flex;
+     flex-direction: row;
+     justify-content: space-around;
+    }
+    .ActionBtn .inactive{
+      height: 50px;
+    }
     .InputsContainer input {
       width: 30%;
       height: 50px;
@@ -228,4 +246,3 @@
       font-size: 10px;
     }
   }
-  

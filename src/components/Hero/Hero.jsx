@@ -1,14 +1,14 @@
 import React from "react";
-import {
-  SignedIn,
-  SignedOut,
-  SignInButton,
-  UserButton,
-} from "@clerk/clerk-react";
-
+import { useNavigate } from "react-router-dom";
 import "./Hero.css";
 
 const Hero = () => {
+  const navigate = useNavigate();
+
+  const handleGetStartedClick = () => {
+    navigate("/Home");
+  };
+
   return (
     <div className="hero-container">
       <div className="hero-content">
@@ -21,9 +21,12 @@ const Hero = () => {
           today!
         </p>
         <div className="hero-buttons">
-          <SignInButton>
-            <button className="hero-signin-button">Get Started</button>
-          </SignInButton>
+          <button
+            className="hero-signin-button"
+            onClick={handleGetStartedClick}
+          >
+            Get Started
+          </button>
         </div>
       </div>
     </div>

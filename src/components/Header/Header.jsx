@@ -19,6 +19,9 @@ function Header() {
     setStartDownload,
     generateReady,
     setGenerateReady,
+    fileName,
+    setFileName,
+    setPageNumbers,
   } = useContext(TextExtractedContext);
 
   const [startPage, setLocalStartPage] = useState(
@@ -28,12 +31,14 @@ function Header() {
   const [inputError, setInputError] = useState({
     manypage: false,
     negativeValue: false,
+    WrongFormat: false,
   });
 
   useEffect(() => {
     setInputError({
       manypage: endPage - startPage > 15,
       negativeValue: endPage < startPage,
+      WrongFormat: startPage <= 0 || endPage <= 0,
     });
   }, [startPage, endPage]);
 
@@ -76,8 +81,14 @@ function Header() {
             }
             setTextExtracted(extractedText);
             setGenerateReady(true);
+            setPageNumbers((prev) => ({
+              ...prev,
+              startPage: startPage,
+              endPage: endPage,
+            }));
           } else {
             setGenerateReady(false);
+            setInputError((prev) => ({ ...prev, WrongFormat: true }));
           }
         } catch (error) {
           console.error("Error loading PDF:", error);
@@ -89,11 +100,16 @@ function Header() {
     }
   }, [acceptedFiles, startPage, endPage, setTextExtracted]);
 
-  const files = acceptedFiles.map((file) => (
-    <li key={file.name}>
-      {file.name} - {file.size} bytes
-    </li>
-  ));
+  const files = acceptedFiles.map(
+    (file) => (
+      setFileName(file.name),
+      (
+        <li key={file.name}>
+          {file.name} - {file.size} bytes
+        </li>
+      )
+    )
+  );
 
   const rejectedFiles = fileRejections.map(({ file }) => (
     <li key={file.name}>{file.name} - Rejected (not a PDF)</li>
@@ -128,7 +144,9 @@ function Header() {
               <input
                 type="number"
                 className={
-                  inputError.manypage || inputError.negativeValue
+                  inputError.manypage ||
+                  inputError.negativeValue ||
+                  inputError.WrongFormat
                     ? "inputError"
                     : "startPage pageInput"
                 }
@@ -139,7 +157,9 @@ function Header() {
               <input
                 type="number"
                 className={
-                  inputError.manypage || inputError.negativeValue
+                  inputError.manypage ||
+                  inputError.negativeValue ||
+                  inputError.WrongFormat
                     ? "inputError"
                     : "endPage pageInput"
                 }

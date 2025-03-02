@@ -52,6 +52,9 @@
   }
   
   @media (max-width: 480px) {
+    .landing-page{
+      padding: 0px;
+    }
     .hero-section {
       margin: 20px 0;
     }

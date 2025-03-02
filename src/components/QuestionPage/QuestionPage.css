@@ -1,0 +1,176 @@
+/* General Styles for Question Box */
+.questions{
+  background-color: #333 ;
+}
+.question-box {
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    background-color: transparent; /* White background */
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .question-box.bookmarked {
+    border: 2px solid lightcoral; /* Light red border when bookmarked */
+  }
+  
+  
+  .question-box h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: white; /* Dark grey for text */
+  }
+  
+  .question-box p {
+    font-size: 16px;
+    color: white; /* Medium grey for text */
+    margin: 5px 0;
+  }
+  
+  /* Show Answer and Extra Buttons in Question Box */
+  .question-box .button-container button {
+    margin: 5px 10px 0 0;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    background-color: #f5f5f5;
+    color: #6a41af;
+    border: 1px solid #6a41af;
+  }
+  .question-box .button-container button:hover{
+    background-color: #e0e0e0;
+    color: #54328c;
+  }
+  .question-box .button-container button:disabled {
+    background-color: #dddddd;
+    cursor: not-allowed;
+  }
+  
+  /* Switch Mode Button */
+  .switch-mode-btn {
+    margin-top: 15px;
+    padding: 10px 20px;
+    background-color: #28a745;
+    border-radius: 5px;
+    transition: background-color 0.2s, transform 0.2s;
+  }
+  
+  .switch-mode-btn:hover {
+    background-color: #218838;
+    transform: translateY(-2px);
+  }
+  
+  /* Loading and Error Message Styling */
+  .loading-message, .error-message {
+    font-size: 18px;
+    font-weight: bold;
+    color: #d9534f;
+    text-align: center;
+  }
+  
+  /* Questions Container */
+  .questions {
+    margin-top: 20px;
+  }
+  
+  .questions .question-box {
+    margin-bottom: 15px;
+  }
+  
+  /* Header Styles */
+  h1 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333333; /* Dark grey for text */
+    margin-bottom: 20px;
+  }
+  
+
+  
+  /* Hover Effect on Question Boxes */
+  .question-box:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-color: #ddd; /* Slight border highlight on hover */
+  }
+  
+  .btnnav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    margin-bottom: 20px;
+    padding: 10px;
+    border-bottom: 1px solid #e0e0e0; /* Subtle bottom border */
+  }
+  
+  .btnnav h1 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333333; /* Dark grey for text */
+    width: 70%;
+    overflow: scroll;
+
+  }
+  
+  .btnnav button {
+    padding: 8px 16px;
+    width: 650px;
+    height: 30px;
+    margin: 10px;
+    font-size: 14px;
+    background-color: #5500625e; /* Notion-like blue */
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
+    margin-left: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0px 0px 0px;
+  }
+
+  .btnnav h1::-webkit-scrollbar {
+    display: none; /* Hides scrollbar in Chrome, Safari, and Edge */
+}
+  
+
+  @media (max-width: 768px) {
+
+  }
+  @media (max-width: 480px) {
+    .btnnav{
+      display: flex;
+      flex-direction: row;
+      
+      width: 80%;
+      margin: 5px 10px 5px 10px;
+      overflow: scroll;
+    }
+    .btnnav h1{
+      font-size: 15px;
+      width: 50%;
+      font-size: 24px;
+      font-weight: bold;
+      color: #333333; /* Dark grey for text */
+      width: 70%;
+      overflow: scroll;
+    }
+    .btnnav button{
+      width: 40%;
+      height: 20px;
+      font-size: 10px;
+      
+    }
+    .question-box .button-container button {
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }

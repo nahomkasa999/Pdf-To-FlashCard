@@ -1,7 +1,9 @@
 import React, { useState, useContext, useEffect } from "react";
-import { useUser } from "@clerk/clerk-react";
 import { TextExtractedContext } from "../../context/TextExtractedContext";
+import toast, { Toaster } from "react-hot-toast";
 import "./Question.css";
+import axios from "axios";
+import { AuthContext } from "../../context/AuthTokenHandler";
 
 function Question() {
   const {
@@ -13,8 +15,11 @@ function Question() {
     setStartDownload,
     generateReady,
     setGenerateReady,
+    fileName,
+    pageNumbers,
   } = useContext(TextExtractedContext);
-  const { isSignedIn, user, isLoaded } = useUser();
+
+  const { login, setShowLogin, user } = useContext(AuthContext);
 
   const [Questions, setQuestions] = useState([]);
   const [showDetails, setShowDetails] = useState([]);
@@ -34,10 +39,9 @@ function Question() {
         setQuestions([]);
         setShowDetails([]);
       }
-      console.log(user);
       setIsLoading(true);
       const values = TextExtracted.map((PageTextExtracted) => {
-        return fetch("http://localhost:5000/gemini", {
+        return fetch("http://localhost:5000/generate/gemini", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -67,7 +71,6 @@ function Question() {
                 Extra: question.Extra || "", // 'Extra' can be empty if not provided
               };
             });
-            console.log(questions);
             return questions;
           });
 
@@ -161,7 +164,6 @@ function Question() {
     alert(`Successfully generated CSV file: ${filename}`);
   };
 
-  // Trigger CSV download when startDownload is true
   useEffect(() => {
     if (startDownload) {
       generateCsvDownload();
@@ -175,6 +177,76 @@ function Question() {
     setBeginGeneration(true);
     setPopup(false);
   };
+
+  const [bookmarked, setBookmarked] = useState([]);
+
+  const toggleBookmark = (index) => {
+    setBookmarked((prevBookmarked) => {
+      const updatedBookmarked = [...prevBookmarked];
+      updatedBookmarked[index] = !updatedBookmarked[index];
+      return updatedBookmarked;
+    });
+  };
+  //"questions":[{Q:"question",A:"answer",Extra:"extra"},{Q:"question",A:"answer",Extra:"extra"}]
+  const handleSave = async () => {
+    const user = localStorage.getItem("userInformation");
+
+    if (!user) {
+      toast.error("You must be logged in to save questions", {
+        duration: 4000,
+        style: {
+          background: "white",
+          border: "2px solidrgb(251, 111, 111)",
+          color: "#6a41af",
+          padding: "16px",
+          borderRadius: "8px",
+        },
+      });
+      setShowLogin(true);
+      return;
+    }
+
+    const userId = JSON.parse(user).userId;
+    const token = localStorage.getItem("accessToken");
+
+    try {
+      await axios.post(
+        `http://localhost:5000/app/${userId}/savequestions`,
+        {
+          name: `${fileName}-(${pageNumbers.startPage} - ${pageNumbers.endPage})`,
+          questions: Questions,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      toast.success("Questions saved successfully", {
+        duration: 4000,
+        style: {
+          background: "white",
+          color: "#6a41af",
+          padding: "16px",
+          borderRadius: "8px",
+        },
+      });
+    } catch (error) {
+      console.error("Error:", error.message);
+      toast.error("Failed to save questions. Please try again later.", {
+        duration: 4000,
+        style: {
+          background: "white",
+          color: "#6a41af",
+          padding: "16px",
+          borderRadius: "8px",
+        },
+      });
+    }
+  };
+
   return (
     <div className="Question" id="Question">
       <h1>FlashCards Generated:</h1>
@@ -197,22 +269,46 @@ function Question() {
       </div>
 
       {Questions.length > 0 ? (
-        Questions.map((question, index) => (
-          <div className="QuestionBox" key={index}>
-            <h3>Q: {question.Q}</h3>
-            {showDetails[index]?.showAnswer && <p>A: {question.A}</p>}
-            {showDetails[index]?.showAnswer &&
-              showDetails[index]?.showExtra && <p>Extra: {question.Extra}</p>}
-            <button onClick={() => toggleAnswer(index)}>
-              {showDetails[index]?.showAnswer ? "Hide" : "Show Answer"}
+        <>
+          <div>
+            {" "}
+            <button className="active" onClick={handleSave}>
+              save
             </button>
-            {showDetails[index]?.showAnswer && (
-              <button onClick={() => toggleExtra(index)}>
-                {showDetails[index]?.showExtra ? "Hide Extra" : "Show Extra"}
-              </button>
-            )}
+            <Toaster />
           </div>
-        ))
+
+          {Questions.map((question, index) => (
+            <div
+              className={`QuestionBox ${bookmarked[index] ? "bookmarked" : ""}`}
+              key={index}
+              onClick={() => toggleBookmark(index)} // Clicking the question box toggles the bookmark
+            >
+              <h3>Q: {question.Q}</h3>
+              {showDetails[index]?.showAnswer && <p>A: {question.A}</p>}
+              {showDetails[index]?.showAnswer &&
+                showDetails[index]?.showExtra && <p>Extra: {question.Extra}</p>}
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toggleAnswer(index);
+                }}
+              >
+                {showDetails[index]?.showAnswer ? "Hide" : "Show Answer"}
+              </button>
+              {showDetails[index]?.showAnswer && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleExtra(index);
+                  }}
+                >
+                  {showDetails[index]?.showExtra ? "Hide Extra" : "Show Extra"}
+                </button>
+              )}
+            </div>
+          ))}
+        </>
       ) : (
         <p>No flashcards generated yet.</p>
       )}

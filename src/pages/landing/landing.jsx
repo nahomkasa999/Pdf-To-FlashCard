@@ -6,12 +6,6 @@ import HowToUse from "../../components/HowToUse/HowToUse";
 import Footer from "../../components/Footer/Footer";
 import { Testimonials } from "../../components/Testimonials/Testimonials";
 import "./Landing.css";
-import {
-  SignedIn,
-  SignedOut,
-  SignInButton,
-  UserButton,
-} from "@clerk/clerk-react";
 
 const Landing = () => {
   return (
